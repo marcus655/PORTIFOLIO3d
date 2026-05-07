@@ -272,7 +272,7 @@ Distribuído sob a licença **MIT**. Veja [`LICENSE`](LICENSE) para mais informa
 
 <div align="center">
 
-**Marcus Andrei** — Desenvolvedor Java em formação · Irecê, Bahia 🇧🇷
+**Marcus Andrei** — Desenvolvedor Java em formação ·  🇧🇷
 
 [![Email](https://img.shields.io/badge/Email-marcus.andrei@email.com-EA4335?style=flat-square&logo=gmail&logoColor=white)](mailto:marcus8andrei@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-marcusandrei-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/marcusandrei)
