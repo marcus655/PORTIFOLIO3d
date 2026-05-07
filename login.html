@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Marcus Andrei</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <!-- Configuração do Supabase — gerada pelo build a partir de env vars -->
+  <script src="supabase-config.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; background: #0a0514; color: #e5e5e5; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
+    #root { width: 100%; height: 100%; }
+    @keyframes grid-scroll { from { background-position: 0 0; } to { background-position: 40px 40px; } }
+    @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+    .bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,0,170,0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,234,255,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: grid-scroll 6s linear infinite;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    }
+    .scan { animation: pulse 3s ease-in-out infinite; }
+    input:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #0f0820 inset; -webkit-text-fill-color: #e5e5e5; }
+    @media (max-width: 480px) { .login-card { margin: 16px !important; padding: 28px !important; } }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const ACCENT = "#ff00aa";
+    const SECOND = "#00eaff";
+
+    function LoginPage() {
+      const [email, setEmail] = React.useState("");
+      const [pwd, setPwd] = React.useState("");
+      const [err, setErr] = React.useState("");
+      const [loading, setLoading] = React.useState(false);
+      const [mode, setMode] = React.useState("password"); // "password" | "magic"
+      const [magicSent, setMagicSent] = React.useState(false);
+
+      // Se Supabase não configurado, usa login local (modo dev)
+      const configured = window.SUPABASE_CONFIGURED;
+
+      const submitPassword = async (e) => {
+        e && e.preventDefault();
+        setLoading(true);
+        setErr("");
+        try {
+          if (configured) {
+            const result = await window.supabase.signIn(email, pwd);
+            if (result) {
+              sessionStorage.setItem("marcus_admin_auth", "1");
+              window.location.href = "index.html";
+            } else {
+              setErr("Email ou senha inválidos.");
+            }
+          } else {
+            // Modo dev — senha local
+            if (pwd === "admin") {
+              sessionStorage.setItem("marcus_admin_auth", "1");
+              window.location.href = "index.html";
+            } else {
+              setErr("Senha incorreta. (modo dev: use 'admin')");
+            }
+          }
+        } catch (e) {
+          setErr("Erro ao conectar. Tente novamente.");
+        }
+        setLoading(false);
+      };
+
+      const inputStyle = (hasErr) => ({
+        width: "100%", padding: "12px 14px", background: "#0f0820", color: "#e5e5e5",
+        border: `1px solid ${hasErr ? "#ef4444" : ACCENT + "40"}`,
+        fontFamily: "inherit", fontSize: 14, outline: "none",
+      });
+      const labelStyle = { display: "block", fontSize: 10, color: SECOND, letterSpacing: 2, marginBottom: 6 };
+
+      return (
+        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+          <div className="bg-grid" />
+          <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 30% 40%, ${ACCENT}15, transparent 50%), radial-gradient(circle at 70% 60%, ${SECOND}12, transparent 50%)` }} />
+          <a href="index.html" style={{ position: "absolute", top: 20, left: 24, color: "#888", textDecoration: "none", fontSize: 11, letterSpacing: 2 }}>← VOLTAR</a>
+          <div className="scan" style={{ position: "absolute", top: 20, right: 24, color: SECOND, fontSize: 10, letterSpacing: 3 }}>● SECURE</div>
+
+          <form className="login-card" onSubmit={submitPassword}
+            style={{ position: "relative", width: "100%", maxWidth: 440, padding: 40, background: "rgba(15,8,32,0.9)", border: `1px solid ${ACCENT}40`, backdropFilter: "blur(20px)", boxShadow: `0 0 60px ${ACCENT}20`, animation: err ? "shake 0.4s" : "none" }}>
+            <div style={{ color: ACCENT, fontSize: 10, letterSpacing: 4, marginBottom: 6 }}>/// ADMIN PANEL</div>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 700, letterSpacing: -1, marginBottom: 6, background: `linear-gradient(135deg, #fff, ${ACCENT})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              Acesso restrito
+            </h1>
+            <p style={{ fontSize: 12, color: "#888", marginBottom: 24, lineHeight: 1.5 }}>
+              {configured ? "Entre com o email e senha que você configurou no Supabase." : "Modo dev ativo (Supabase não configurado). Use 'admin' como senha."}
+            </p>
+
+            {configured && (
+              <div style={{ marginBottom: 14 }}>
+                <label style={labelStyle}>EMAIL</label>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                  style={inputStyle(!!err)}
+                  onFocus={e => e.target.style.borderColor = ACCENT}
+                  onBlur={e => e.target.style.borderColor = err ? "#ef4444" : ACCENT + "40"} />
+              </div>
+            )}
+
+            <div style={{ marginBottom: 20 }}>
+              <label style={labelStyle}>SENHA</label>
+              <input autoFocus type="password" value={pwd} onChange={e => setPwd(e.target.value)}
+                placeholder="••••••••"
+                style={inputStyle(!!err)}
+                onFocus={e => e.target.style.borderColor = ACCENT}
+                onBlur={e => e.target.style.borderColor = err ? "#ef4444" : ACCENT + "40"} />
+            </div>
+
+            {err && <div style={{ color: "#ef4444", fontSize: 11, marginBottom: 14, letterSpacing: 1 }}>✗ {err}</div>}
+
+            <button type="submit" disabled={loading}
+              style={{ width: "100%", padding: 14, background: loading ? "#333" : ACCENT, color: "#000", border: "none", cursor: loading ? "wait" : "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", clipPath: "polygon(0 0, 100% 0, 97% 100%, 3% 100%)" }}>
+              {loading ? "autenticando..." : "entrar ▶"}
+            </button>
+
+            {!configured && (
+              <div style={{ marginTop: 16, padding: "10px 12px", background: `${SECOND}15`, border: `1px solid ${SECOND}40`, fontSize: 11, color: SECOND, lineHeight: 1.6 }}>
+                ⚠ Supabase não configurado. Leia o <strong>DEPLOY-GUIDE.md</strong> para ativar auth real.
+              </div>
+            )}
+
+            <div style={{ marginTop: 24, paddingTop: 16, borderTop: `1px solid ${ACCENT}20`, fontSize: 10, color: "#555", letterSpacing: 1, display: "flex", justifyContent: "space-between" }}>
+              <span>portfolio v3</span>
+              <span>marcus andrei © {new Date().getFullYear()}</span>
+            </div>
+          </form>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<LoginPage />);
+  </script>
+</body>
+</html>

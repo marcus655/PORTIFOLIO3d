@@ -1,0 +1,50 @@
+# ============================================================
+# Netlify configuration
+# ============================================================
+
+[build]
+  publish = "."
+  # Gera supabase-config.js a partir das env vars antes do deploy
+  command = "node build.js"
+
+# ============================================================
+# SPA fallback — qualquer rota inexistente cai no index
+# ============================================================
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ============================================================
+# Content-Type correto para arquivos JSX (Babel-in-browser)
+# ============================================================
+[[headers]]
+  for = "/*.jsx"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+
+# ============================================================
+# Headers de segurança (boas práticas)
+# ============================================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # HSTS — força HTTPS por 1 ano após primeiro acesso
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# ============================================================
+# Cache longo para assets versionados (imagens)
+# ============================================================
+[[headers]]
+  for = "/uploads/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

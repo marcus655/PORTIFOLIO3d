@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marcus Andrei — Portfólio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <meta name="description" content="Marcus Andrei — Desenvolvedor Java Júnior. Portfólio de projetos e habilidades.">
+  <meta property="og:title" content="Marcus Andrei — Desenvolvedor Java">
+  <meta property="og:description" content="Portfólio de projetos, habilidades e trajetória.">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; min-height: 100%; background: #0a0514; color: #e5e5e5; }
+    #root { width: 100%; }
+    a { color: inherit; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: #000; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Configuração do Supabase — gerada pelo build a partir de env vars -->
+  <script src="supabase-config.js"></script>
+
+  <script type="text/babel">
+// portfolio-data.jsx
+// Fonte de dados do portfólio — carrega do Supabase, localStorage como fallback.
+
+const DEFAULT_DATA = {
+  name: "Marcus Andrei",
+  headline: "Desenvolvedor Java Júnior",
+  tagline: "// em transição para o IFBA — aprendendo, construindo, evoluindo",
+  about: "Sou estudante de desenvolvimento em início de carreira. Atualmente curso ADS em EAD há mais de um ano e estou em processo de transferência para o IFBA de Irecê–BA para reiniciar a formação em busca de um ensino de maior qualidade. Trabalho como auxiliar administrativo e, nesse meio tempo, desenvolvo tanto o site institucional quanto o sistema interno da empresa em que atuo — levando código do zero à produção e aprendendo no processo.",
+  location: "Irecê — Bahia",
+  email: "marcus.andrei@email.com",
+  github: "github.com/marcusandrei",
+  linkedin: "linkedin.com/in/marcusandrei",
+  photo: null,        // URL da foto de perfil
+  cvUrl: null,        // URL do PDF do currículo
+  formspreeId: "",   // ID do Formspree para formulário de contato
+
+  skills: [
+    { name: "Java", category: "Backend" },
+    { name: "Spring Boot", category: "Backend" },
+    { name: "MySQL", category: "Database" },
+    { name: "HTML / CSS", category: "Frontend" },
+    { name: "JavaScript", category: "Frontend" },
+    { name: "Git & GitHub", category: "Ferramentas" },
+    { name: "POO", category: "Fundamentos" },
+    { name: "REST APIs", category: "Backend" },
+  ],
+
+  experience: [
+    {
+      role: "Auxiliar Administrativo & Desenvolvedor",
+      company: "Empresa atual",
+      period: "Atualmente",
+      description: "Atuo como auxiliar administrativo e, em paralelo, desenvolvo o site institucional e o sistema interno da empresa. Responsável pelo projeto do zero — levantamento de requisitos, modelagem, código e deploy.",
+    },
+    {
+      role: "Estudante de ADS — IFBA Irecê (em transição)",
+      company: "Instituto Federal da Bahia — Campus Irecê",
+      period: "Em breve",
+      description: "Em processo de transferência para iniciar a graduação em Análise e Desenvolvimento de Sistemas no IFBA, em busca de um ensino presencial e de maior qualidade.",
+    },
+    {
+      role: "Estudante de ADS — EAD",
+      company: "Graduação EAD",
+      period: "2024 — 2026",
+      description: "Mais de um ano cursando Análise e Desenvolvimento de Sistemas na modalidade EAD. Estou saindo para recomeçar presencialmente no IFBA.",
+    },
+  ],
+
+  projects: [
+    { id: "p1", title: "Sistema Interno da Empresa", tags: ["Java", "Spring Boot", "MySQL"], description: "Sistema de gestão interno que estou desenvolvendo para a empresa onde trabalho. Cadastros, controle de processos e relatórios.", year: "2026", image: null, github: "", link: "" },
+    { id: "p2", title: "Site Institucional", tags: ["HTML", "CSS", "JavaScript"], description: "Site da empresa onde trabalho. Vitrine digital com informações, serviços e contato.", year: "2026", image: null, github: "", link: "" },
+    { id: "p3", title: "Portfólio 3D", tags: ["HTML", "CSS", "Three.js"], description: "Este portfólio que você está vendo. Interface com efeitos 3D, cursor custom e painel administrativo.", year: "2026", image: null, github: "", link: "" },
+    { id: "p4", title: "TaskFlow API", tags: ["Java", "Spring Boot"], description: "Estudo prático: API REST para gerenciamento de tarefas com autenticação JWT e documentação Swagger.", year: "2025", image: null, github: "", link: "" },
+    { id: "p5", title: "Biblioteca Online", tags: ["Java", "Spring MVC"], description: "Sistema web de estudo para cadastro e empréstimo de livros. CRUD completo e controle de usuários.", year: "2025", image: null, github: "", link: "" },
+    { id: "p6", title: "Calculadora Financeira", tags: ["Java", "JavaFX"], description: "App desktop para calcular juros e financiamentos. Projeto feito para praticar orientação a objetos.", year: "2024", image: null, github: "", link: "" },
+    { id: "p7", title: "To-do CLI", tags: ["Java"], description: "Gerenciador de tarefas pelo terminal com persistência em arquivo. Exercício para praticar I/O em Java.", year: "2024", image: null, github: "", link: "" },
+  ],
+
+  testimonials: [],
+
+  ui: {
+    heroCtaPrimary: "EXPLORAR PROJETOS ▶",
+    heroCtaSecondary: "→ ENTRAR EM CONTATO",
+    statusBadge: "● DISPONÍVEL",
+    aboutTitle: "Em construção.\nSempre aprendendo.",
+    projectsTitle: "Meus projetos.",
+    skillsTitle: "Stack em estudo.",
+    experienceTitle: "Trajetória.",
+    testimonialsTitle: "Recomendações.",
+    contactTitle: "Vamos\nconversar.",
+    contactSubtitle: "Aberto para oportunidades, projetos freela e networking.",
+    footerTag: "build.v3.synthgrid",
+  },
+};
+
+const LS_KEY = "marcus_portfolio_data_v2";
+
+// ─── LocalStorage helpers ───────────────────────────────────────────────────
+
+function lsLoad() {
+  try {
+    localStorage.removeItem("marcus_portfolio_data_v1");
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    return { ...DEFAULT_DATA, ...p, ui: { ...DEFAULT_DATA.ui, ...(p.ui || {}) } };
+  } catch { return null; }
+}
+
+function lsSave(data) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(data)); } catch {}
+}
+
+// ─── Supabase helpers ────────────────────────────────────────────────────────
+
+async function sbLoad() {
+  if (!window.supabase || !window.SUPABASE_CONFIGURED) return null;
+  try {
+    const sb = window.supabase;
+    const headers = {
+      "Content-Type": "application/json",
+      "apikey": sb._key,
+    };
+    if (sb._token) headers["Authorization"] = `Bearer ${sb._token}`;
+
+    const [profileRes, projectsRes, skillsRes, expRes, testRes] = await Promise.all([
+      fetch(`${sb._url}/rest/v1/portfolio_profile?select=*&limit=1`, { headers }),
+      fetch(`${sb._url}/rest/v1/portfolio_projects?select=*&order=sort_order`, { headers }),
+      fetch(`${sb._url}/rest/v1/portfolio_skills?select=*&order=sort_order`, { headers }),
+      fetch(`${sb._url}/rest/v1/portfolio_experience?select=*&order=sort_order`, { headers }),
+      fetch(`${sb._url}/rest/v1/portfolio_testimonials?select=*&order=sort_order`, { headers }),
+    ]);
+
+    if (!profileRes.ok) return null;
+
+    const [profiles, projects, skills, experience, testimonials] = await Promise.all([
+      profileRes.json(), projectsRes.json(), skillsRes.json(), expRes.json(), testRes.json(),
+    ]);
+
+    const profile = profiles[0];
+    if (!profile) return null;
+
+    return {
+      ...DEFAULT_DATA,
+      name: profile.name || DEFAULT_DATA.name,
+      headline: profile.headline || DEFAULT_DATA.headline,
+      tagline: profile.tagline || DEFAULT_DATA.tagline,
+      about: profile.about || DEFAULT_DATA.about,
+      location: profile.location || DEFAULT_DATA.location,
+      email: profile.email || DEFAULT_DATA.email,
+      github: profile.github || DEFAULT_DATA.github,
+      linkedin: profile.linkedin || DEFAULT_DATA.linkedin,
+      photo: profile.photo || null,
+      cvUrl: profile.cv_url || null,
+      formspreeId: profile.formspree_id || "",
+      ui: { ...DEFAULT_DATA.ui, ...(profile.ui || {}) },
+      projects: projects.length > 0 ? projects.map(p => ({
+        id: p.id, title: p.title, tags: p.tags || [], description: p.description,
+        year: p.year, image: p.image_url || null, github: p.github_url || "", link: p.project_link || "",
+      })) : DEFAULT_DATA.projects,
+      skills: skills.length > 0 ? skills.map(s => ({ name: s.name, category: s.category })) : DEFAULT_DATA.skills,
+      experience: experience.length > 0 ? experience.map(x => ({ role: x.role, company: x.company, period: x.period, description: x.description })) : DEFAULT_DATA.experience,
+      testimonials: testimonials.map(t => ({ quote: t.quote, author: t.author, role: t.role })),
+    };
+  } catch (e) {
+    console.warn("Supabase load failed, using local data", e);
+    return null;
+  }
+}
+
+async function sbSave(data) {
+  if (!window.supabase || !window.SUPABASE_CONFIGURED || !window.supabase._token) return false;
+  try {
+    const sb = window.supabase;
+    const headers = {
+      "Content-Type": "application/json",
+      "apikey": sb._key,
+      "Authorization": `Bearer ${sb._token}`,
+      "Prefer": "resolution=merge-duplicates,return=minimal",
+    };
+
+    // 1. Upsert profile (fixed id "main")
+    await fetch(`${sb._url}/rest/v1/portfolio_profile`, {
+      method: "POST", headers,
+      body: JSON.stringify([{
+        id: "00000000-0000-0000-0000-000000000001",
+        name: data.name, headline: data.headline, tagline: data.tagline,
+        about: data.about, location: data.location, email: data.email,
+        github: data.github, linkedin: data.linkedin,
+        photo: data.photo || null,
+        cv_url: data.cvUrl || null,
+        formspree_id: data.formspreeId || "",
+        ui: data.ui || {},
+        updated_at: new Date().toISOString(),
+      }]),
+    });
+
+    // 2. Replace projects: delete all then insert
+    await fetch(`${sb._url}/rest/v1/portfolio_projects?id=neq.00000000-0000-0000-0000-000000000000`, {
+      method: "DELETE", headers,
+    });
+    if (data.projects.length > 0) {
+      await fetch(`${sb._url}/rest/v1/portfolio_projects`, {
+        method: "POST",
+        headers: { ...headers, Prefer: "return=minimal" },
+        body: JSON.stringify(data.projects.map((p, i) => ({
+          title: p.title, description: p.description, tags: p.tags || [],
+          year: p.year, image_url: p.image || null,
+          github_url: p.github || "", project_link: p.link || "",
+          sort_order: i,
+        }))),
+      });
+    }
+
+    // 3. Replace skills
+    await fetch(`${sb._url}/rest/v1/portfolio_skills?id=neq.00000000-0000-0000-0000-000000000000`, {
+      method: "DELETE", headers,
+    });
+    if (data.skills.length > 0) {
+      await fetch(`${sb._url}/rest/v1/portfolio_skills`, {
+        method: "POST",
+        headers: { ...headers, Prefer: "return=minimal" },
+        body: JSON.stringify(data.skills.map((s, i) => ({ name: s.name, category: s.category, sort_order: i }))),
+      });
+    }
+
+    // 4. Replace experience
+    await fetch(`${sb._url}/rest/v1/portfolio_experience?id=neq.00000000-0000-0000-0000-000000000000`, {
+      method: "DELETE", headers,
+    });
+    if (data.experience.length > 0) {
+      await fetch(`${sb._url}/rest/v1/portfolio_experience`, {
+        method: "POST",
+        headers: { ...headers, Prefer: "return=minimal" },
+        body: JSON.stringify(data.experience.map((x, i) => ({ role: x.role, company: x.company, period: x.period, description: x.description, sort_order: i }))),
+      });
+    }
+
+    // 5. Replace testimonials
+    await fetch(`${sb._url}/rest/v1/portfolio_testimonials?id=neq.00000000-0000-0000-0000-000000000000`, {
+      method: "DELETE", headers,
+    });
+    if (data.testimonials.length > 0) {
+      await fetch(`${sb._url}/rest/v1/portfolio_testimonials`, {
+        method: "POST",
+        headers: { ...headers, Prefer: "return=minimal" },
+        body: JSON.stringify(data.testimonials.map((t, i) => ({ quote: t.quote, author: t.author, role: t.role, sort_order: i }))),
+      });
+    }
+
+    return true;
+  } catch (e) {
+    console.error("Supabase save failed", e);
+    return false;
+  }
+}
+
+// ─── Upload de imagem para Supabase Storage ─────────────────────────────────
+
+async function uploadImageToSupabase(file) {
+  if (!window.supabase || !window.SUPABASE_CONFIGURED || !window.supabase._token) return null;
+  const sb = window.supabase;
+  const path = `projects/${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, "_")}`;
+  const r = await fetch(`${sb._url}/storage/v1/object/project-images/${path}`, {
+    method: "POST",
+    headers: { "apikey": sb._key, "Authorization": `Bearer ${sb._token}`, "Content-Type": file.type },
+    body: file,
+  });
+  if (!r.ok) return null;
+  return `${sb._url}/storage/v1/object/public/project-images/${path}`;
+}
+
+// ─── Evento global para sincronização ───────────────────────────────────────
+
+function notifyDataChanged(data) {
+  window.dispatchEvent(new CustomEvent("portfolio-data-changed", { detail: data }));
+}
+
+async function saveData(data) {
+  lsSave(data);
+  notifyDataChanged(data);
+  const ok = await sbSave(data);
+  if (ok) console.log("✅ Salvo no Supabase");
+  else console.log("💾 Salvo localmente (Supabase indisponível ou não autenticado)");
+}
+
+async function resetData() {
+  localStorage.removeItem(LS_KEY);
+  notifyDataChanged(DEFAULT_DATA);
+}
+
+// ─── Hook principal ──────────────────────────────────────────────────────────
+
+function usePortfolioData() {
+  const [data, setDataState] = React.useState(() => lsLoad() || DEFAULT_DATA);
+  const [loading, setLoading] = React.useState(true);
+
+  // Carrega do Supabase na montagem
+  React.useEffect(() => {
+    sbLoad().then(sbData => {
+      if (sbData) {
+        setDataState(sbData);
+        lsSave(sbData);
+      }
+      setLoading(false);
+    });
+  }, []);
+
+  // Escuta mudanças locais
+  React.useEffect(() => {
+    const handler = (e) => setDataState(e.detail);
+    window.addEventListener("portfolio-data-changed", handler);
+    return () => window.removeEventListener("portfolio-data-changed", handler);
+  }, []);
+
+  const setData = async (newData) => {
+    setDataState(newData);
+    await saveData(newData);
+  };
+
+  return [data, setData, loading];
+}
+
+Object.assign(window, {
+  DEFAULT_DATA, lsLoad, lsSave, sbLoad, sbSave,
+  saveData, resetData, usePortfolioData, uploadImageToSupabase,
+});
+
+  </script>
+
+  <script type="text/babel">
+// Admin panel — overlays on the portfolio, allows editing all data.
+
+function AdminPanel({ onClose, accentColor = "#a3e635", bgColor = "#0a0a0a", textColor = "#e5e5e5" }) {
+  const [data, setData] = usePortfolioData();
+  const [tab, setTab] = React.useState("profile");
+  const [draft, setDraft] = React.useState(data);
+  const [saving, setSaving] = React.useState(false);
+  const [saved, setSaved] = React.useState(false);
+  const [previewing, setPreviewing] = React.useState(false);
+
+  React.useEffect(() => { setDraft(data); }, [JSON.stringify(data)]);
+
+  const save = async () => {
+    setSaving(true);
+    await setData(draft);
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  // Preview: temporarily apply draft data to live view
+  const togglePreview = () => {
+    if (!previewing) {
+      window.dispatchEvent(new CustomEvent("portfolio-data-changed", { detail: draft }));
+      setPreviewing(true);
+    } else {
+      window.dispatchEvent(new CustomEvent("portfolio-data-changed", { detail: data }));
+      setPreviewing(false);
+    }
+  };
+
+  const panelStyle = {
+    position: "fixed", inset: 0, zIndex: 10000,
+    background: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    fontFamily: "'JetBrains Mono', monospace",
+  };
+  const cardStyle = {
+    width: "min(960px, 92vw)", maxHeight: "88vh",
+    background: bgColor, color: textColor,
+    border: `1px solid ${accentColor}40`,
+    borderRadius: 4, display: "flex", flexDirection: "column",
+    boxShadow: `0 0 60px ${accentColor}20`,
+  };
+  const headerStyle = {
+    padding: "16px 24px", borderBottom: `1px solid ${accentColor}30`,
+    display: "flex", alignItems: "center", justifyContent: "space-between",
+  };
+  const tabsStyle = { display: "flex", gap: 4, padding: "12px 24px 0", borderBottom: `1px solid ${accentColor}20` };
+  const tabStyle = (active) => ({
+    padding: "8px 14px", cursor: "pointer", fontSize: 12,
+    background: active ? accentColor : "transparent",
+    color: active ? "#000" : textColor,
+    border: `1px solid ${active ? accentColor : accentColor + "30"}`,
+    borderBottom: "none",
+    borderRadius: "4px 4px 0 0",
+    fontFamily: "inherit",
+  });
+  const bodyStyle = { padding: 24, overflowY: "auto", flex: 1 };
+  const footerStyle = {
+    padding: 16, borderTop: `1px solid ${accentColor}30`,
+    display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12,
+  };
+  const inputStyle = {
+    width: "100%", background: "#000", color: textColor,
+    border: `1px solid ${accentColor}40`, padding: "8px 10px",
+    fontFamily: "inherit", fontSize: 13, borderRadius: 2, outline: "none",
+  };
+  const labelStyle = { fontSize: 11, textTransform: "uppercase", letterSpacing: 1, color: accentColor, marginBottom: 4, display: "block" };
+  const btn = (variant = "ghost") => ({
+    padding: "8px 16px", fontSize: 12, cursor: "pointer", fontFamily: "inherit",
+    border: `1px solid ${accentColor}`,
+    background: variant === "primary" ? accentColor : "transparent",
+    color: variant === "primary" ? "#000" : accentColor,
+    borderRadius: 2, letterSpacing: 1, textTransform: "uppercase",
+  });
+
+  // Compat: se dado antigo tiver skills com level, ignora. Se não tiver ui, herda default.
+  const draftSafe = draft && typeof draft === "object" ? draft : data;
+  const update = (patch) => setDraft({ ...draftSafe, ...patch });
+
+  const renderProfile = () => (
+    <div style={{ display: "grid", gap: 14 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div>
+          <label style={labelStyle}>Nome</label>
+          <input style={inputStyle} value={draft.name} onChange={e => update({ name: e.target.value })} />
+        </div>
+        <div>
+          <label style={labelStyle}>Localização</label>
+          <input style={inputStyle} value={draft.location} onChange={e => update({ location: e.target.value })} />
+        </div>
+      </div>
+      <div>
+        <label style={labelStyle}>Headline</label>
+        <input style={inputStyle} value={draft.headline} onChange={e => update({ headline: e.target.value })} />
+      </div>
+      <div>
+        <label style={labelStyle}>Tagline</label>
+        <input style={inputStyle} value={draft.tagline} onChange={e => update({ tagline: e.target.value })} />
+      </div>
+      <div>
+        <label style={labelStyle}>Sobre</label>
+        <textarea style={{ ...inputStyle, minHeight: 120, resize: "vertical" }} value={draft.about} onChange={e => update({ about: e.target.value })} />
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div>
+          <label style={labelStyle}>Email</label>
+          <input style={inputStyle} value={draft.email} onChange={e => update({ email: e.target.value })} />
+        </div>
+        <div>
+          <label style={labelStyle}>GitHub</label>
+          <input style={inputStyle} value={draft.github} onChange={e => update({ github: e.target.value })} />
+        </div>
+        <div>
+          <label style={labelStyle}>LinkedIn</label>
+          <input style={inputStyle} value={draft.linkedin} onChange={e => update({ linkedin: e.target.value })} />
+        </div>
+        <div>
+          <label style={labelStyle}>URL do CV (PDF)</label>
+          <input style={inputStyle} placeholder="https://..." value={draft.cvUrl || ""} onChange={e => update({ cvUrl: e.target.value })} />
+        </div>
+      </div>
+      <div>
+        <label style={labelStyle}>ID do Formspree (formulário de contato)</label>
+        <input style={inputStyle} placeholder="ex: xpzgkjvw" value={draft.formspreeId || ""} onChange={e => update({ formspreeId: e.target.value })} />
+        <div style={{ fontSize: 10, color: "#888", marginTop: 4 }}>Crie gratuitamente em formspree.io → pegue o ID do endpoint</div>
+      </div>
+      <div>
+        <label style={labelStyle}>Foto de perfil</label>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+          {draft.photo && <img src={draft.photo} style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover", border: `2px solid ${accentColor}` }} />}
+          <label style={{ ...btn(), cursor: "pointer" }}>
+            {draft.photo ? "trocar foto" : "upload foto"}
+            <input type="file" accept="image/*" style={{ display: "none" }} onChange={async e => {
+              const file = e.target.files[0];
+              if (!file) return;
+              let url = null;
+              if (window.SUPABASE_CONFIGURED && window.supabase._token) url = await uploadImageToSupabase(file);
+              if (!url) url = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(file); });
+              update({ photo: url });
+            }} />
+          </label>
+          {draft.photo && <button style={btn()} onClick={() => update({ photo: null })}>remover</button>}
+        </div>
+      </div>
+      <div style={{ borderTop: `1px solid ${accentColor}20`, paddingTop: 14 }}>
+        <label style={labelStyle}>Segurança — Trocar senha</label>
+        <div style={{ fontSize: 11, color: "#888", lineHeight: 1.6, marginBottom: 8 }}>A senha é gerenciada diretamente no Supabase. Para trocar:</div>
+        <a href="https://supabase.com" target="_blank" rel="noopener" style={{ ...btn(), textDecoration: "none", display: "inline-block" }}>→ Abrir Supabase Auth</a>
+        <div style={{ fontSize: 10, color: "#666", marginTop: 6 }}>Authentication → Users → clique no seu usuário → Send recovery email</div>
+      </div>
+    </div>
+  );
+
+  const handleImageUpload = async (idx, file) => {
+    // Tenta upload no Supabase Storage; fallback para base64
+    let imageUrl = null;
+    if (window.SUPABASE_CONFIGURED && window.supabase._token) {
+      imageUrl = await uploadImageToSupabase(file);
+    }
+    if (!imageUrl) {
+      // Fallback base64
+      imageUrl = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    }
+    const list = [...draft.projects];
+    list[idx] = { ...list[idx], image: imageUrl };
+    update({ projects: list });
+  };
+
+  const renderProjects = () => (
+    <div style={{ display: "grid", gap: 14 }}>
+      {draft.projects.map((p, i) => (
+        <div key={p.id} style={{ border: `1px solid ${accentColor}30`, padding: 14, borderRadius: 2 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+            <span style={{ color: accentColor, fontSize: 11 }}>#{i + 1} — {p.id}</span>
+            <button style={btn()} onClick={() => update({ projects: draft.projects.filter(x => x.id !== p.id) })}>remover</button>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 10, marginBottom: 8 }}>
+            <input style={inputStyle} placeholder="Título" value={p.title} onChange={e => { const l = [...draft.projects]; l[i] = { ...p, title: e.target.value }; update({ projects: l }); }} />
+            <input style={inputStyle} placeholder="Ano" value={p.year} onChange={e => { const l = [...draft.projects]; l[i] = { ...p, year: e.target.value }; update({ projects: l }); }} />
+          </div>
+          <input style={{ ...inputStyle, marginBottom: 8 }} placeholder="Tags (vírgula)" value={p.tags.join(", ")} onChange={e => { const l = [...draft.projects]; l[i] = { ...p, tags: e.target.value.split(",").map(s => s.trim()).filter(Boolean) }; update({ projects: l }); }} />
+          <textarea style={{ ...inputStyle, minHeight: 60, marginBottom: 8 }} placeholder="Descrição" value={p.description} onChange={e => { const l = [...draft.projects]; l[i] = { ...p, description: e.target.value }; update({ projects: l }); }} />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
+            <input style={inputStyle} placeholder="Link GitHub (opcional)" value={p.github || ""} onChange={e => { const l = [...draft.projects]; l[i] = { ...p, github: e.target.value }; update({ projects: l }); }} />
+            <input style={inputStyle} placeholder="Link do projeto (opcional)" value={p.link || ""} onChange={e => { const l = [...draft.projects]; l[i] = { ...p, link: e.target.value }; update({ projects: l }); }} />
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <label style={{ ...btn(), display: "inline-block" }}>
+              {p.image ? "trocar imagem" : "upload imagem"}
+              <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => e.target.files[0] && handleImageUpload(i, e.target.files[0])} />
+            </label>
+            {p.image && (
+              <>
+                <img src={p.image} style={{ width: 50, height: 50, objectFit: "cover", borderRadius: 2 }} />
+                <button style={btn()} onClick={() => { const l = [...draft.projects]; l[i] = { ...p, image: null }; update({ projects: l }); }}>limpar</button>
+              </>
+            )}
+          </div>
+        </div>
+      ))}
+      <button style={{ ...btn("primary"), padding: 12 }} onClick={() => update({ projects: [...draft.projects, { id: "p" + Date.now(), title: "Novo projeto", tags: [], description: "", year: new Date().getFullYear().toString(), image: null }] })}>+ adicionar projeto</button>
+    </div>
+  );
+
+  const renderSkills = () => (
+    <div style={{ display: "grid", gap: 10 }}>
+      <div style={{ fontSize: 11, color: "#888", marginBottom: 4 }}>Organize suas habilidades por categoria (ex: Backend, Frontend, Ferramentas).</div>
+      {draft.skills.map((s, i) => (
+        <div key={i} style={{ display: "grid", gridTemplateColumns: "2fr 1fr auto", gap: 8, alignItems: "center" }}>
+          <input style={inputStyle} placeholder="Skill (ex: Java)" value={s.name} onChange={e => { const l = [...draft.skills]; l[i] = { ...s, name: e.target.value }; update({ skills: l }); }} />
+          <input style={inputStyle} placeholder="Categoria" value={s.category} onChange={e => { const l = [...draft.skills]; l[i] = { ...s, category: e.target.value }; update({ skills: l }); }} />
+          <button style={btn()} onClick={() => update({ skills: draft.skills.filter((_, j) => j !== i) })}>×</button>
+        </div>
+      ))}
+      <button style={btn("primary")} onClick={() => update({ skills: [...draft.skills, { name: "Nova skill", category: "Outro" }] })}>+ skill</button>
+    </div>
+  );
+
+  const renderExperience = () => (
+    <div style={{ display: "grid", gap: 14 }}>
+      {draft.experience.map((x, i) => (
+        <div key={i} style={{ border: `1px solid ${accentColor}30`, padding: 14, borderRadius: 2, display: "grid", gap: 8 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr auto", gap: 8 }}>
+            <input style={inputStyle} placeholder="Cargo" value={x.role} onChange={e => { const l = [...draft.experience]; l[i] = { ...x, role: e.target.value }; update({ experience: l }); }} />
+            <input style={inputStyle} placeholder="Empresa" value={x.company} onChange={e => { const l = [...draft.experience]; l[i] = { ...x, company: e.target.value }; update({ experience: l }); }} />
+            <input style={inputStyle} placeholder="Período" value={x.period} onChange={e => { const l = [...draft.experience]; l[i] = { ...x, period: e.target.value }; update({ experience: l }); }} />
+            <button style={btn()} onClick={() => update({ experience: draft.experience.filter((_, j) => j !== i) })}>×</button>
+          </div>
+          <textarea style={{ ...inputStyle, minHeight: 60 }} value={x.description} onChange={e => { const l = [...draft.experience]; l[i] = { ...x, description: e.target.value }; update({ experience: l }); }} />
+        </div>
+      ))}
+      <button style={btn("primary")} onClick={() => update({ experience: [...draft.experience, { role: "", company: "", period: "", description: "" }] })}>+ experiência</button>
+    </div>
+  );
+
+  const renderTestimonials = () => (
+    <div style={{ display: "grid", gap: 14 }}>
+      <div style={{ fontSize: 11, color: "#888" }}>Quando você tiver depoimentos reais, adicione aqui. Enquanto a lista estiver vazia, a seção não aparece no site.</div>
+      {draft.testimonials.map((t, i) => (
+        <div key={i} style={{ border: `1px solid ${accentColor}30`, padding: 14, borderRadius: 2, display: "grid", gap: 8 }}>
+          <textarea style={{ ...inputStyle, minHeight: 60 }} placeholder="Depoimento" value={t.quote} onChange={e => { const l = [...draft.testimonials]; l[i] = { ...t, quote: e.target.value }; update({ testimonials: l }); }} />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 8 }}>
+            <input style={inputStyle} placeholder="Autor" value={t.author} onChange={e => { const l = [...draft.testimonials]; l[i] = { ...t, author: e.target.value }; update({ testimonials: l }); }} />
+            <input style={inputStyle} placeholder="Cargo" value={t.role} onChange={e => { const l = [...draft.testimonials]; l[i] = { ...t, role: e.target.value }; update({ testimonials: l }); }} />
+            <button style={btn()} onClick={() => update({ testimonials: draft.testimonials.filter((_, j) => j !== i) })}>×</button>
+          </div>
+        </div>
+      ))}
+      <button style={btn("primary")} onClick={() => update({ testimonials: [...draft.testimonials, { quote: "", author: "", role: "" }] })}>+ depoimento</button>
+    </div>
+  );
+
+  const updateUi = (patch) => update({ ui: { ...(draft.ui || {}), ...patch } });
+  const renderUi = () => {
+    const ui = draft.ui || {};
+    const fields = [
+      ["heroCtaPrimary", "Botão CTA principal (hero)"],
+      ["heroCtaSecondary", "Botão CTA secundário (hero)"],
+      ["statusBadge", "Badge de status"],
+      ["aboutTitle", "Título da seção Sobre (use \\n para nova linha)"],
+      ["projectsTitle", "Título da seção Projetos"],
+      ["skillsTitle", "Título da seção Skills"],
+      ["experienceTitle", "Título da seção Trajetória"],
+      ["testimonialsTitle", "Título da seção Depoimentos"],
+      ["contactTitle", "Título da seção Contato (use \\n)"],
+      ["contactSubtitle", "Subtítulo do contato"],
+      ["footerTag", "Tag do rodapé"],
+    ];
+    return (
+      <div style={{ display: "grid", gap: 12 }}>
+        <div style={{ fontSize: 11, color: "#888" }}>Edite todos os textos fixos da interface. Use <code style={{ color: accentColor }}>\n</code> para quebrar linha em títulos.</div>
+        {fields.map(([k, label]) => (
+          <div key={k}>
+            <label style={labelStyle}>{label}</label>
+            {k.endsWith("Title") || k === "contactSubtitle"
+              ? <textarea style={{ ...inputStyle, minHeight: 50, resize: "vertical" }} value={ui[k] || ""} onChange={e => updateUi({ [k]: e.target.value })} />
+              : <input style={inputStyle} value={ui[k] || ""} onChange={e => updateUi({ [k]: e.target.value })} />
+            }
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const tabs = [
+    { id: "profile", label: "perfil", render: renderProfile },
+    { id: "projects", label: `projetos (${draft.projects.length})`, render: renderProjects },
+    { id: "skills", label: `stack (${draft.skills.length})`, render: renderSkills },
+    { id: "experience", label: `xp (${draft.experience.length})`, render: renderExperience },
+    { id: "testimonials", label: `reviews (${draft.testimonials.length})`, render: renderTestimonials },
+    { id: "ui", label: "textos", render: renderUi },
+  ];
+
+  return (
+    <div style={panelStyle} onClick={onClose}>
+      <div style={cardStyle} onClick={e => e.stopPropagation()}>
+        <div style={headerStyle}>
+          <div>
+            <div style={{ fontSize: 10, color: accentColor, letterSpacing: 2, textTransform: "uppercase" }}>admin@portfolio ~$</div>
+            <div style={{ fontSize: 18, marginTop: 2 }}>Painel de controle</div>
+          </div>
+          <button style={btn()} onClick={onClose}>fechar [esc]</button>
+        </div>
+        <div style={tabsStyle}>
+          {tabs.map(t => <div key={t.id} style={tabStyle(tab === t.id)} onClick={() => setTab(t.id)}>{t.label}</div>)}
+        </div>
+        <div style={bodyStyle}>{tabs.find(t => t.id === tab).render()}</div>
+        <div style={footerStyle}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+            {window.SUPABASE_CONFIGURED
+              ? <span style={{ fontSize: 10, color: accentColor, letterSpacing: 1 }}>● SUPABASE ATIVO</span>
+              : <span style={{ fontSize: 10, color: "#888", letterSpacing: 1 }}>○ modo local</span>}
+            {saved && <span style={{ fontSize: 10, color: accentColor }}>✓ salvo!</span>}
+            <button style={{ ...btn(), fontSize: 10, padding: "6px 12px", borderColor: previewing ? accentColor : "#555", color: previewing ? accentColor : "#888" }} onClick={togglePreview}>{previewing ? "✦ visualizando" : "▶ pré-visualizar"}</button>
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button style={btn()} onClick={onClose}>cancelar</button>
+            <button style={{ ...btn("primary"), opacity: saving ? 0.6 : 1 }} onClick={() => { save().then(() => onClose()); }} disabled={saving}>{saving ? "salvando..." : "salvar & fechar"}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LoginGate({ onSuccess, onCancel, accentColor = "#a3e635" }) {
+  const [pwd, setPwd] = React.useState("");
+  const [err, setErr] = React.useState(false);
+  const tryLogin = () => {
+    if (pwd === "admin") { onSuccess(); } else { setErr(true); setTimeout(() => setErr(false), 600); }
+  };
+  return (
+    <div style={{ position: "fixed", inset: 0, zIndex: 10000, background: "rgba(0,0,0,0.9)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace" }} onClick={onCancel}>
+      <div onClick={e => e.stopPropagation()} style={{ background: "#0a0a0a", border: `1px solid ${accentColor}60`, padding: 32, width: 380, borderRadius: 4, animation: err ? "shake 0.4s" : "none" }}>
+        <div style={{ color: accentColor, fontSize: 11, letterSpacing: 2, marginBottom: 4 }}>AUTH REQUIRED</div>
+        <div style={{ color: "#e5e5e5", fontSize: 18, marginBottom: 20 }}>$ sudo login</div>
+        <input autoFocus type="password" value={pwd} onChange={e => setPwd(e.target.value)} onKeyDown={e => e.key === "Enter" && tryLogin()}
+          placeholder="password" style={{ width: "100%", background: "#000", color: "#e5e5e5", border: `1px solid ${err ? "#ef4444" : accentColor + "60"}`, padding: "10px 12px", fontFamily: "inherit", fontSize: 14, outline: "none", borderRadius: 2, marginBottom: 12 }} />
+        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+          <button onClick={onCancel} style={{ padding: "8px 16px", fontSize: 12, fontFamily: "inherit", background: "transparent", color: "#888", border: "1px solid #333", cursor: "pointer", borderRadius: 2 }}>cancelar</button>
+          <button onClick={tryLogin} style={{ padding: "8px 16px", fontSize: 12, fontFamily: "inherit", background: accentColor, color: "#000", border: "none", cursor: "pointer", borderRadius: 2, letterSpacing: 1 }}>ENTRAR</button>
+        </div>
+      </div>
+      <style>{`@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }`}</style>
+    </div>
+  );
+}
+
+function AdminTrigger({ accentColor = "#a3e635" }) {
+  const [stage, setStage] = React.useState("idle"); // idle | login | open
+  return (
+    <>
+      <button onClick={() => setStage("login")} style={{ position: "fixed", bottom: 16, left: 16, zIndex: 9999, padding: "8px 14px", fontSize: 11, fontFamily: "'JetBrains Mono', monospace", background: "rgba(0,0,0,0.6)", color: accentColor, border: `1px solid ${accentColor}60`, backdropFilter: "blur(8px)", cursor: "pointer", borderRadius: 2, letterSpacing: 1.5 }}>
+        ⚙ admin
+      </button>
+      {stage === "login" && <LoginGate accentColor={accentColor} onSuccess={() => setStage("open")} onCancel={() => setStage("idle")} />}
+      {stage === "open" && <AdminPanel accentColor={accentColor} onClose={() => setStage("idle")} />}
+    </>
+  );
+}
+
+Object.assign(window, { AdminPanel, LoginGate, AdminTrigger });
+
+  </script>
+
+  <script type="text/babel">
+// V3 — Cena 3D rica: terrain + planeta orbital + estrelas em camadas + ondas
+// Synthwave / dark roxo · cursor cria ripples, click envia pulse
+
+function Hero3DTerrain({ accentColor, secondColor = "#ff00aa" }) {
+  const mountRef = React.useRef(null);
+  React.useEffect(() => {
+    const mount = mountRef.current;
+    if (!mount || !window.THREE) return;
+    const THREE = window.THREE;
+    const w = mount.clientWidth, h = mount.clientHeight;
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0a0514, 6, 32);
+    const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 100);
+    camera.position.set(0, 2.5, 6);
+    camera.lookAt(0, 0, -5);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(w, h);
+    mount.appendChild(renderer.domElement);
+
+    const accentTHREE = new THREE.Color(accentColor);
+    const secondTHREE = new THREE.Color(secondColor);
+
+    // ─── Grid terrain ─────────────────────────────────────────────
+    const segs = 60;
+    const size = 30;
+    const geo = new THREE.PlaneGeometry(size, size, segs, segs);
+    geo.rotateX(-Math.PI / 2);
+    const original = new Float32Array(geo.attributes.position.array);
+    const mat = new THREE.LineBasicMaterial({ color: accentTHREE, transparent: true, opacity: 0.55 });
+    const wire = new THREE.LineSegments(new THREE.WireframeGeometry(geo), mat);
+    wire.position.z = -5;
+    scene.add(wire);
+
+    // ─── Estrelas em 3 camadas (parallax) ─────────────────────────
+    const starLayers = [];
+    [{ count: 800, size: 0.025, depth: -18, color: 0xffffff, opacity: 0.8 },
+     { count: 400, size: 0.045, depth: -12, color: secondColor, opacity: 0.6 },
+     { count: 200, size: 0.06,  depth: -8,  color: accentColor, opacity: 0.5 }].forEach(layer => {
+      const sGeo = new THREE.BufferGeometry();
+      const sPos = new Float32Array(layer.count * 3);
+      for (let i = 0; i < layer.count; i++) {
+        sPos[i*3]     = (Math.random() - 0.5) * 60;
+        sPos[i*3 + 1] = (Math.random() - 0.2) * 25;
+        sPos[i*3 + 2] = layer.depth + (Math.random() - 0.5) * 4;
+      }
+      sGeo.setAttribute("position", new THREE.BufferAttribute(sPos, 3));
+      const sMat = new THREE.PointsMaterial({ color: layer.color, size: layer.size, transparent: true, opacity: layer.opacity, sizeAttenuation: true });
+      const stars = new THREE.Points(sGeo, sMat);
+      scene.add(stars);
+      starLayers.push({ obj: stars, depth: layer.depth });
+    });
+
+    // ─── Partículas que sobem (não caem) — vibe magia ─────────────
+    const pCount = 700;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    const pVel = new Float32Array(pCount);
+    const pPhase = new Float32Array(pCount);
+    for (let i = 0; i < pCount; i++) {
+      pPos[i * 3]     = (Math.random() - 0.5) * 22;
+      pPos[i * 3 + 1] = Math.random() * 8 - 1;
+      pPos[i * 3 + 2] = (Math.random() - 0.5) * 20 - 3;
+      pVel[i]   = 0.004 + Math.random() * 0.014;
+      pPhase[i] = Math.random() * Math.PI * 2;
+    }
+    pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({ color: secondTHREE, size: 0.05, transparent: true, opacity: 0.85, sizeAttenuation: true });
+    const points = new THREE.Points(pGeo, pMat);
+    scene.add(points);
+
+    // ─── Planeta wireframe simples (sem anéis, sem satélites) ─────
+    const sphere = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(0.95, 1),
+      new THREE.MeshBasicMaterial({ color: accentTHREE, wireframe: true })
+    );
+    sphere.position.set(0, 2.2, -4);
+    scene.add(sphere);
+
+    // ─── Interação ────────────────────────────────────────────────
+    let mx = 0, my = 0, targetMx = 0, targetMy = 0;
+    let clickPulse = 0;
+    let scrollY = 0;
+    const onMove = (e) => {
+      targetMx = (e.clientX / window.innerWidth - 0.5);
+      targetMy = (e.clientY / window.innerHeight - 0.5);
+    };
+    const onClick = () => { clickPulse = 1; };
+    const onScroll = () => { scrollY = window.scrollY; };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("click", onClick);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    let raf;
+    const start = performance.now();
+    const pos = geo.attributes.position;
+    const tick = () => {
+      const t = (performance.now() - start) * 0.001;
+      mx += (targetMx - mx) * 0.06;
+      my += (targetMy - my) * 0.06;
+      clickPulse *= 0.92;
+      const scrollPhase = Math.min(scrollY / 600, 1);
+
+      // Ripple from mouse onto terrain
+      for (let i = 0; i < pos.count; i++) {
+        const x = original[i * 3];
+        const z = original[i * 3 + 2];
+        const mouseWorldX = mx * 8;
+        const mouseWorldZ = -5 + my * 4;
+        const dx = x - mouseWorldX;
+        const dz = z - mouseWorldZ;
+        const d = Math.sqrt(dx * dx + dz * dz);
+        const ripple = Math.sin(d * 1.2 - t * 3) * Math.max(0, 1 - d / 6) * 0.5;
+        const wave = Math.sin(x * 0.5 + t) * 0.25 + Math.cos(z * 0.5 + t * 0.8) * 0.25;
+        const pulse = clickPulse * Math.max(0, 1 - d / 8) * 0.8;
+        pos.setY(i, wave + ripple + pulse);
+      }
+      pos.needsUpdate = true;
+      wire.geometry.dispose();
+      wire.geometry = new THREE.WireframeGeometry(geo);
+
+      // Partículas — sobem em espiral
+      const pa = pGeo.attributes.position.array;
+      for (let i = 0; i < pCount; i++) {
+        pa[i * 3 + 1] += pVel[i];
+        pa[i * 3]     += Math.sin(t * 0.7 + pPhase[i]) * 0.003 + mx * 0.012;
+        pa[i * 3 + 2] += Math.cos(t * 0.5 + pPhase[i]) * 0.003;
+        if (pa[i * 3 + 1] > 8) pa[i * 3 + 1] = -1;
+      }
+      pGeo.attributes.position.needsUpdate = true;
+
+      // Estrelas — parallax sutil com mouse + scroll
+      starLayers.forEach((layer, idx) => {
+        const factor = (idx + 1) * 0.5;
+        layer.obj.rotation.y = t * 0.005 * factor + mx * 0.05 * factor;
+        layer.obj.position.x = -mx * factor;
+        layer.obj.position.y = -my * factor * 0.4 - scrollPhase * 2;
+      });
+
+      // Planeta — segue mouse + rotação contínua + breathe com click
+      const planetTargetX = mx * 2.8;
+      const planetTargetY = 2.2 - my * 1.4 + Math.sin(t * 0.6) * 0.18;
+      sphere.position.x += (planetTargetX - sphere.position.x) * 0.06;
+      sphere.position.y += (planetTargetY - sphere.position.y) * 0.06;
+      sphere.position.z = -4 - scrollPhase * 3;
+      sphere.rotation.y = t * 0.4 + mx * 1.5;
+      sphere.rotation.x = t * 0.25 - my * 1.2;
+      const breathe = 1 + Math.sin(t * 1.5) * 0.04 + clickPulse * 0.5;
+      sphere.scale.setScalar(breathe);
+
+      // Câmera — segue mouse + scroll
+      camera.position.x += (mx * 2.5 - camera.position.x) * 0.04;
+      camera.position.y += (2.5 - my * 1.5 + scrollPhase * 0.8 - camera.position.y) * 0.04;
+      camera.position.z = 6 - scrollPhase * 1.5;
+      camera.lookAt(0, 1, -5);
+
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+
+    const onResize = () => {
+      const nw = mount.clientWidth, nh = mount.clientHeight;
+      renderer.setSize(nw, nh);
+      camera.aspect = nw / nh;
+      camera.updateProjectionMatrix();
+    };
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("click", onClick);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      renderer.dispose();
+      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
+    };
+  }, [accentColor, secondColor]);
+  return <div ref={mountRef} style={{ position: "absolute", inset: 0 }} />;
+}
+
+// ─── Cena 3D secundária — DNA helix rotativo (background da seção skills) ──
+function DNAHelix3D({ accentColor, secondColor }) {
+  const mountRef = React.useRef(null);
+  React.useEffect(() => {
+    const mount = mountRef.current;
+    if (!mount || !window.THREE) return;
+    const THREE = window.THREE;
+    const w = mount.clientWidth, h = mount.clientHeight;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);
+    camera.position.set(0, 0, 9);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(w, h);
+    mount.appendChild(renderer.domElement);
+
+    const accentTHREE = new THREE.Color(accentColor);
+    const secondTHREE = new THREE.Color(secondColor);
+
+    const helixGroup = new THREE.Group();
+    scene.add(helixGroup);
+
+    const turns = 4;
+    const pointsPerTurn = 14;
+    const totalPoints = turns * pointsPerTurn;
+    const radius = 1.2;
+    const height = 8;
+
+    const nodes1 = [], nodes2 = [];
+    for (let i = 0; i < totalPoints; i++) {
+      const t = i / totalPoints;
+      const angle = t * Math.PI * 2 * turns;
+      const y = (t - 0.5) * height;
+      // Strand 1
+      const n1 = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(0.12, 0),
+        new THREE.MeshBasicMaterial({ color: accentTHREE })
+      );
+      n1.position.set(Math.cos(angle) * radius, y, Math.sin(angle) * radius);
+      helixGroup.add(n1);
+      nodes1.push({ obj: n1, angle, y });
+      // Strand 2
+      const n2 = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(0.12, 0),
+        new THREE.MeshBasicMaterial({ color: secondTHREE })
+      );
+      n2.position.set(Math.cos(angle + Math.PI) * radius, y, Math.sin(angle + Math.PI) * radius);
+      helixGroup.add(n2);
+      nodes2.push({ obj: n2, angle: angle + Math.PI, y });
+      // Connecting line every 2nd
+      if (i % 2 === 0) {
+        const lineGeo = new THREE.BufferGeometry().setFromPoints([n1.position.clone(), n2.position.clone()]);
+        const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.2 }));
+        helixGroup.add(line);
+      }
+    }
+
+    let raf, mx = 0, targetMx = 0;
+    const onMove = (e) => { targetMx = (e.clientX / window.innerWidth - 0.5); };
+    window.addEventListener("mousemove", onMove);
+
+    const start = performance.now();
+    const tick = () => {
+      const t = (performance.now() - start) * 0.001;
+      mx += (targetMx - mx) * 0.05;
+      helixGroup.rotation.y = t * 0.4 + mx * 0.6;
+      helixGroup.rotation.z = Math.sin(t * 0.3) * 0.1;
+      // Pulse cada nó
+      nodes1.forEach((n, i) => {
+        const s = 1 + Math.sin(t * 2 + i * 0.3) * 0.3;
+        n.obj.scale.setScalar(s);
+      });
+      nodes2.forEach((n, i) => {
+        const s = 1 + Math.sin(t * 2 + i * 0.3 + Math.PI) * 0.3;
+        n.obj.scale.setScalar(s);
+      });
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+
+    const onResize = () => {
+      const nw = mount.clientWidth, nh = mount.clientHeight;
+      renderer.setSize(nw, nh);
+      camera.aspect = nw / nh;
+      camera.updateProjectionMatrix();
+    };
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("resize", onResize);
+      renderer.dispose();
+      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
+    };
+  }, [accentColor, secondColor]);
+  return <div ref={mountRef} style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.55 }} />;
+}
+
+// Custom cursor that reacts to hoverable elements
+function CustomCursor({ accentColor, secondColor }) {
+  const dotRef = React.useRef(null);
+  const ringRef = React.useRef(null);
+  const [touch, setTouch] = React.useState(false);
+  React.useEffect(() => {
+    // Desabilita cursor custom em dispositivos touch / mobile
+    const isTouch = ("ontouchstart" in window) || navigator.maxTouchPoints > 0 || window.matchMedia("(hover: none)").matches;
+    if (isTouch) { setTouch(true); return; }
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    let rx = mx, ry = my;
+    let hovering = false;
+    const onMove = (e) => { mx = e.clientX; my = e.clientY; };
+    const onOver = (e) => {
+      const hov = !!(e.target.closest && e.target.closest("a, button, [data-hover]"));
+      hovering = hov;
+      if (ringRef.current) {
+        ringRef.current.style.width = hov ? "60px" : "32px";
+        ringRef.current.style.height = hov ? "60px" : "32px";
+        ringRef.current.style.borderColor = hov ? secondColor : accentColor;
+      }
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseover", onOver);
+    let raf;
+    const tick = () => {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      if (dotRef.current) dotRef.current.style.transform = `translate(${mx - 3}px, ${my - 3}px)`;
+      if (ringRef.current) ringRef.current.style.transform = `translate(${rx - (hovering ? 30 : 16)}px, ${ry - (hovering ? 30 : 16)}px)`;
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseover", onOver);
+    };
+  }, [accentColor, secondColor]);
+  if (touch) return null;
+  return (
+    <>
+      <div ref={ringRef} style={{ position: "fixed", top: 0, left: 0, width: 32, height: 32, border: `1.5px solid ${accentColor}`, borderRadius: "50%", pointerEvents: "none", zIndex: 9998, transition: "width 0.25s, height 0.25s, border-color 0.2s", mixBlendMode: "difference" }} />
+      <div ref={dotRef} style={{ position: "fixed", top: 0, left: 0, width: 6, height: 6, background: accentColor, borderRadius: "50%", pointerEvents: "none", zIndex: 9999 }} />
+    </>
+  );
+}
+
+// ─── Loading Screen ────────────────────────────────────────────────────────
+function LoadingScreen({ accentColor, secondColor, onDone }) {
+  const [pct, setPct] = React.useState(0);
+  React.useEffect(() => {
+    const steps = [20, 45, 70, 90, 100];
+    let i = 0;
+    const next = () => {
+      if (i >= steps.length) { setTimeout(onDone, 300); return; }
+      setPct(steps[i++]);
+      setTimeout(next, 180 + Math.random() * 200);
+    };
+    setTimeout(next, 100);
+  }, []);
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "#0a0514", zIndex: 99999, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", transition: pct === 100 ? "opacity 0.4s" : "none", opacity: pct === 100 ? 0 : 1, pointerEvents: pct === 100 ? "none" : "auto" }}>
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ fontSize: "clamp(48px,10vw,96px)", fontFamily: "'Geist', sans-serif", fontWeight: 900, background: `linear-gradient(135deg, #fff, ${accentColor}, ${secondColor})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", letterSpacing: -3 }}>MA</div>
+      </div>
+      <div style={{ width: 200, height: 2, background: "#1a0f28", position: "relative", marginBottom: 12 }}>
+        <div style={{ height: "100%", background: `linear-gradient(90deg, ${accentColor}, ${secondColor})`, width: `${pct}%`, transition: "width 0.3s ease" }} />
+      </div>
+      <div style={{ fontSize: 10, letterSpacing: 4, color: "#888" }}>CARREGANDO... {pct}%</div>
+    </div>
+  );
+}
+
+// ─── Scroll Reveal ───────────────────────────────────────────────────────────
+function useScrollReveal(options = {}) {
+  const ref = React.useRef(null);
+  const [visible, setVisible] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); obs.disconnect(); }
+    }, { threshold: 0.12, ...options });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+function Reveal({ children, delay = 0, style }) {
+  const [ref, visible] = useScrollReveal();
+  return (
+    <div ref={ref} style={{ transition: `opacity 0.7s ${delay}s, transform 0.7s ${delay}s`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(32px)", ...style }}>
+      {children}
+    </div>
+  );
+}
+
+// ─── Project Modal ───────────────────────────────────────────────────────────
+function ProjectModal({ project, onClose, accentColor, secondColor, bgColor }) {
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  if (!project) return null;
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 9000, background: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, fontFamily: "'JetBrains Mono', monospace" }}>
+      <div onClick={e => e.stopPropagation()} style={{ width: "min(760px,94vw)", background: bgColor, border: `1px solid ${accentColor}50`, boxShadow: `0 0 60px ${accentColor}20`, maxHeight: "88vh", overflowY: "auto", borderRadius: 2 }}>
+        {project.image && <div style={{ height: 240, background: `url(${project.image}) center/cover`, borderBottom: `1px solid ${accentColor}30` }} />}
+        {!project.image && <div style={{ height: 120, background: `linear-gradient(135deg, ${accentColor}20, ${secondColor}10)`, display: "flex", alignItems: "center", justifyContent: "center", borderBottom: `1px solid ${accentColor}30` }}><span style={{ fontSize: 48, fontWeight: 900, color: `${accentColor}50`, fontFamily: "'Geist', sans-serif" }}>{project.title[0]}</span></div>}
+        <div style={{ padding: 32 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16, flexWrap: "wrap", gap: 12 }}>
+            <div>
+              <div style={{ color: secondColor, fontSize: 10, letterSpacing: 3, marginBottom: 6 }}>{project.year}</div>
+              <h2 style={{ fontFamily: "'Geist', sans-serif", fontSize: 32, fontWeight: 700, letterSpacing: -1 }}>{project.title}</h2>
+            </div>
+            <button onClick={onClose} style={{ background: "transparent", border: `1px solid ${accentColor}50`, color: accentColor, padding: "8px 14px", cursor: "pointer", fontFamily: "inherit", fontSize: 11, letterSpacing: 2 }}>FECHAR ×</button>
+          </div>
+          <p style={{ color: "#ccc", fontSize: 16, lineHeight: 1.8, fontFamily: "'Geist', sans-serif", marginBottom: 24 }}>{project.description}</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+            {project.tags.map(t => <span key={t} style={{ fontSize: 11, color: secondColor, background: `${secondColor}15`, padding: "4px 10px", letterSpacing: 1 }}>#{t}</span>)}
+          </div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            {project.github && <a href={project.github.startsWith("http") ? project.github : `https://${project.github}`} target="_blank" rel="noopener" style={{ padding: "10px 18px", border: `1px solid ${accentColor}`, color: accentColor, textDecoration: "none", fontSize: 11, letterSpacing: 2 }}>→ GITHUB</a>}
+            {project.link && <a href={project.link.startsWith("http") ? project.link : `https://${project.link}`} target="_blank" rel="noopener" style={{ padding: "10px 18px", background: accentColor, color: "#000", textDecoration: "none", fontSize: 11, fontWeight: 700, letterSpacing: 2 }}>↗ VER PROJETO</a>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+function TiltCard({ children, style, maxTilt = 8, ...rest }) {
+  const ref = React.useRef(null);
+  const [tilt, setTilt] = React.useState({ rx: 0, ry: 0, glowX: 50, glowY: 50 });
+  const [touch, setTouch] = React.useState(false);
+  React.useEffect(() => {
+    setTouch(("ontouchstart" in window) || navigator.maxTouchPoints > 0 || window.matchMedia("(hover: none)").matches);
+  }, []);
+  const onMove = (e) => {
+    if (touch) return;
+    const r = ref.current.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width;
+    const y = (e.clientY - r.top) / r.height;
+    setTilt({ ry: (x - 0.5) * maxTilt * 2, rx: -(y - 0.5) * maxTilt * 2, glowX: x * 100, glowY: y * 100 });
+  };
+  const onLeave = () => setTilt({ rx: 0, ry: 0, glowX: 50, glowY: 50 });
+  return (
+    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} {...rest}
+      style={{ ...style, transform: touch ? "none" : `perspective(900px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`, transformStyle: "preserve-3d", transition: tilt.rx === 0 ? "transform 0.5s" : "transform 0.1s", "--glow-x": `${tilt.glowX}%`, "--glow-y": `${tilt.glowY}%` }}>
+      {children}
+    </div>
+  );
+}
+
+// Magnetic button — attracts toward cursor (desabilita em touch)
+function MagneticButton({ children, style, as = "a", strength = 0.3, ...rest }) {
+  const ref = React.useRef(null);
+  const [off, setOff] = React.useState({ x: 0, y: 0 });
+  const [touch, setTouch] = React.useState(false);
+  React.useEffect(() => {
+    setTouch(("ontouchstart" in window) || navigator.maxTouchPoints > 0 || window.matchMedia("(hover: none)").matches);
+  }, []);
+  const onMove = (e) => {
+    if (touch) return;
+    const r = ref.current.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    setOff({ x: (e.clientX - cx) * strength, y: (e.clientY - cy) * strength });
+  };
+  const onLeave = () => setOff({ x: 0, y: 0 });
+  const Comp = as;
+  return (
+    <Comp ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} {...rest}
+      style={{ ...style, transform: touch ? "none" : `translate(${off.x}px, ${off.y}px)`, transition: off.x === 0 ? "transform 0.5s cubic-bezier(.2,1,.2,1)" : "transform 0.1s", display: "inline-block" }}>
+      {children}
+    </Comp>
+  );
+}
+
+// Hidden admin activator — listens for typed sequence "admin" anywhere on page
+function HiddenAdminTrigger({ accentColor = "#a3e635" }) {
+  const [stage, setStage] = React.useState("idle");
+  React.useEffect(() => {
+    let buf = "";
+    const onKey = (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      buf = (buf + e.key.toLowerCase()).slice(-5);
+      if (buf === "admin") { setStage("login"); buf = ""; }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  return (
+    <>
+      {stage === "login" && <LoginGate accentColor={accentColor} onSuccess={() => setStage("open")} onCancel={() => setStage("idle")} />}
+      {stage === "open" && <AdminPanel accentColor={accentColor} onClose={() => setStage("idle")} />}
+    </>
+  );
+}
+
+// Auto-open admin panel if arrived from login page
+function AutoAdminPanel({ accentColor = "#ff00aa" }) {
+  const [open, setOpen] = React.useState(false);
+  React.useEffect(() => {
+    // Verifica tanto o flag local quanto o token do Supabase
+    const localAuth = sessionStorage.getItem("marcus_admin_auth") === "1";
+    const sbAuth = !!sessionStorage.getItem("sb_token");
+    if (localAuth || sbAuth) {
+      setOpen(true);
+    }
+  }, []);
+  if (!open) return null;
+  return <AdminPanel accentColor={accentColor} onClose={() => {
+    sessionStorage.removeItem("marcus_admin_auth");
+    setOpen(false);
+  }} />;
+}
+
+// Discreet admin link — nearly invisible corner dot, redirects to login page
+function DiscreetAdminLink() {
+  return (
+    <a href="login.html" title="" data-hover
+       style={{ position: "fixed", bottom: 12, right: 12, zIndex: 9000, width: 10, height: 10, borderRadius: "50%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", opacity: 0.5, transition: "opacity 0.3s, transform 0.3s", cursor: "pointer" }}
+       onMouseEnter={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "scale(1.4)"; }}
+       onMouseLeave={e => { e.currentTarget.style.opacity = "0.5"; e.currentTarget.style.transform = "scale(1)"; }} />
+  );
+}
+
+// ─── Scroll progress bar (linha no topo) ────────────────────────
+function ScrollProgressBar({ accentColor, secondColor }) {
+  const [pct, setPct] = React.useState(0);
+  React.useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      setPct(h > 0 ? (window.scrollY / h) * 100 : 0);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 2, background: "rgba(255,255,255,0.04)", zIndex: 100 }}>
+      <div style={{ height: "100%", width: `${pct}%`, background: `linear-gradient(90deg, ${accentColor}, ${secondColor})`, transition: "width 0.1s linear", boxShadow: `0 0 10px ${accentColor}` }} />
+    </div>
+  );
+}
+
+function PortfolioV3({ accentColor = "#ff00aa", bgColor = "#0a0514" }) {
+  const [data, , loading] = usePortfolioData();
+  const secondColor = "#00eaff";
+  const [showLoader, setShowLoader] = React.useState(true);
+  const [selectedProject, setSelectedProject] = React.useState(null);
+  const [mobile, setMobile] = React.useState(false);
+  const [contactStatus, setContactStatus] = React.useState("idle"); // idle | sending | sent | error
+  const [contactForm, setContactForm] = React.useState({ name: "", email: "", message: "" });
+
+  React.useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const handler = (e) => setMobile(e.matches);
+    setMobile(mq.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const submitContact = async (e) => {
+    e.preventDefault();
+    const fid = data.formspreeId;
+    if (!fid) { alert("Configure o ID do Formspree no painel admin!"); return; }
+    setContactStatus("sending");
+    try {
+      const r = await fetch(`https://formspree.io/f/${fid}`, {
+        method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(contactForm),
+      });
+      setContactStatus(r.ok ? "sent" : "error");
+    } catch { setContactStatus("error"); }
+  };
+
+  const px = mobile ? "20px" : "48px";
+
+  const v3Styles = {
+    root: { background: bgColor, color: "#e5e5e5", minHeight: "100%", fontFamily: "'JetBrains Mono', monospace", fontSize: 14, cursor: mobile ? "auto" : "none" },
+    nav: { position: "sticky", top: 0, zIndex: 50, padding: mobile ? "14px 20px" : "16px 48px", display: "flex", justifyContent: "space-between", alignItems: "center", background: `${bgColor}dd`, backdropFilter: "blur(14px)", borderBottom: `1px solid ${accentColor}30`, fontSize: 11, letterSpacing: 2 },
+    section: { padding: mobile ? "70px 20px" : "120px 48px", maxWidth: 1500, margin: "0 auto" },
+    eyebrow: { color: secondColor, fontSize: 10, letterSpacing: 4, textTransform: "uppercase", marginBottom: 16 },
+    h2: { fontSize: mobile ? 44 : 72, fontWeight: 900, letterSpacing: -2, margin: 0, marginBottom: 40, fontFamily: "'Geist', sans-serif", textTransform: "uppercase" },
+  };
+
+  const inputSt = { width: "100%", padding: "12px 14px", background: "#0f0820", color: "#e5e5e5", border: `1px solid ${accentColor}40`, fontFamily: "'JetBrains Mono',monospace", fontSize: 13, outline: "none", marginBottom: 12 };
+
+  if (showLoader) return <LoadingScreen accentColor={accentColor} secondColor={secondColor} onDone={() => setShowLoader(false)} />;
+
+  return (
+    <div style={v3Styles.root}>
+      <CustomCursor accentColor={accentColor} secondColor={secondColor} />
+      <DiscreetAdminLink />
+      <AutoAdminPanel accentColor={accentColor} />
+      {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} accentColor={accentColor} secondColor={secondColor} bgColor={bgColor} />}
+      <ScrollProgressBar accentColor={accentColor} secondColor={secondColor} />
+      <nav style={v3Styles.nav}>
+        <div style={{ color: accentColor, fontWeight: 700 }}>&lt;MARCUS/&gt;</div>
+        {!mobile && (
+          <div style={{ display: "flex", gap: 24 }}>
+            {["sobre", "projetos", "skills", "contato"].map(x => <a key={x} href={`#${x}`} style={{ color: "#bbb", textDecoration: "none" }}>[{x}]</a>)}
+          </div>
+        )}
+        <div style={{ color: secondColor }}>● ONLINE</div>
+      </nav>
+
+      <section style={{ position: "relative", height: "100vh", minHeight: 600, overflow: "hidden" }}>
+        <Hero3DTerrain accentColor={accentColor} secondColor={secondColor} />
+        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, transparent 30%, ${bgColor} 90%)` }} />
+        <div style={{ position: "relative", zIndex: 2, padding: mobile ? "60px 20px 0" : "80px 48px 0", maxWidth: 1500, margin: "0 auto" }}>
+          <h1 style={{ fontSize: mobile ? "clamp(64px,18vw,100px)" : "clamp(80px, 14vw, 220px)", fontFamily: "'Geist', sans-serif", fontWeight: 900, letterSpacing: -4, lineHeight: 0.88, margin: 0, textTransform: "uppercase", background: `linear-gradient(135deg, #fff 0%, ${accentColor} 60%, ${secondColor} 100%)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            Marcus<br />Andrei
+          </h1>
+          <div style={{ marginTop: 24, maxWidth: 520 }}>
+            <div style={{ display: "inline-block", padding: "6px 14px", border: `1px solid ${accentColor}`, color: accentColor, fontSize: 11, letterSpacing: 2, marginBottom: 12 }}>// {data.headline.toUpperCase()}</div>
+            <div style={{ color: "#ccc", fontSize: mobile ? 14 : 16, lineHeight: 1.7, fontFamily: "'Geist', sans-serif" }}>{data.tagline.replace(/\/\/\s*/, "")}</div>
+          </div>
+          <div style={{ marginTop: 32, display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <MagneticButton as="a" href="#projetos" style={{ padding: "12px 24px", background: accentColor, color: "#000", textDecoration: "none", fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", clipPath: "polygon(0 0, 100% 0, 95% 100%, 5% 100%)" }}>{data.ui?.heroCtaPrimary || "EXPLORAR PROJETOS ▶"}</MagneticButton>
+            <MagneticButton as="a" href="#contato" style={{ padding: "12px 20px", color: secondColor, textDecoration: "none", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", border: `1px solid ${secondColor}60` }}>{data.ui?.heroCtaSecondary || "→ CONTATO"}</MagneticButton>
+            {data.cvUrl && <MagneticButton as="a" href={data.cvUrl} target="_blank" rel="noopener" style={{ padding: "12px 20px", color: "#fff", textDecoration: "none", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", border: "1px solid #ffffff40" }}>↓ CV</MagneticButton>}
+          </div>
+        </div>
+      </section>
+
+      <section id="sobre" style={v3Styles.section}>
+        <Reveal>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1.5fr", gap: mobile ? 32 : 60 }}>
+          <div>
+            <div style={v3Styles.eyebrow}>/// 01 ABOUT</div>
+            <h2 style={v3Styles.h2}>{(data.ui?.aboutTitle || "Em construção.\nSempre aprendendo.").split("\n").map((line, i) => <React.Fragment key={i}>{line}{i < (data.ui?.aboutTitle || "x\nx").split("\n").length - 1 && <br />}</React.Fragment>)}</h2>
+            {data.photo && (
+              <div style={{ position: "relative", display: "inline-block", marginTop: 8 }}>
+                <div style={{ width: 160, height: 160, borderRadius: "50%", overflow: "hidden", border: `3px solid ${accentColor}`, boxShadow: `0 0 30px ${accentColor}50, 0 0 60px ${accentColor}20` }}>
+                  <img src={data.photo} alt={data.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                </div>
+                <div style={{ position: "absolute", inset: -6, borderRadius: "50%", border: `1px solid ${secondColor}40`, animation: "spin 8s linear infinite" }} />
+              </div>
+            )}
+          </div>
+          <div>
+            <p style={{ fontSize: mobile ? 16 : 20, lineHeight: 1.7, color: "#ddd", fontFamily: "'Geist', sans-serif", margin: 0, marginBottom: 28 }}>{data.about}</p>
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 14, fontSize: 12 }}>
+              {[["location", data.location], ["email", data.email], ["github", data.github], ["linkedin", data.linkedin]].map(([k, v]) => (
+                <div key={k} style={{ borderLeft: `2px solid ${accentColor}`, paddingLeft: 12 }}>
+                  <div style={{ color: secondColor, fontSize: 10, letterSpacing: 2 }}>{k.toUpperCase()}</div>
+                  <div style={{ color: "#ccc", marginTop: 2, wordBreak: "break-all" }}>{v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        </Reveal>
+      </section>
+
+      <section id="projetos" style={v3Styles.section}>
+        <Reveal>
+        <div style={v3Styles.eyebrow}>/// 02 PROJECTS [{data.projects.length}]</div>
+        <h2 style={v3Styles.h2}>{data.ui?.projectsTitle || "Meus projetos."}</h2>
+        </Reveal>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 20 }}>
+          {data.projects.map((p, i) => (
+            <Reveal key={p.id} delay={i * 0.08}>
+            <TiltCard data-hover onClick={() => setSelectedProject(p)} style={{ border: `1px solid ${accentColor}40`, padding: 0, background: "#0f0820", position: "relative", overflow: "hidden", cursor: "pointer" }}>
+              <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at var(--glow-x) var(--glow-y), ${accentColor}25, transparent 60%)`, pointerEvents: "none", zIndex: 1 }} />
+              <div style={{ height: 180, background: p.image ? `url(${p.image}) center/cover` : `linear-gradient(135deg, ${accentColor}20, ${secondColor}10)`, position: "relative", display: "flex", alignItems: "center", justifyContent: "center", borderBottom: `1px solid ${accentColor}30` }}>
+                {!p.image && <div style={{ fontSize: 40, fontWeight: 900, color: `${accentColor}60`, fontFamily: "'Geist', sans-serif" }}>0{i + 1}</div>}
+              </div>
+              <div style={{ padding: 20, position: "relative", zIndex: 2 }}>
+                <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "'Geist', sans-serif", marginBottom: 8 }}>{p.title}</div>
+                <p style={{ fontSize: 13, color: "#aaa", margin: "0 0 14px 0", lineHeight: 1.6 }}>{p.description}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
+                  {p.tags.map(t => <span key={t} style={{ fontSize: 10, color: secondColor, background: `${secondColor}15`, padding: "3px 8px", letterSpacing: 1 }}>#{t}</span>)}
+                </div>
+                <div style={{ fontSize: 10, color: accentColor, letterSpacing: 2 }}>CLIQUE PARA VER DETALHES →</div>
+              </div>
+            </TiltCard>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section id="skills" style={{ ...v3Styles.section, position: "relative", overflow: "hidden" }}>
+        <DNAHelix3D accentColor={accentColor} secondColor={secondColor} />
+        <div style={{ position: "relative", zIndex: 2 }}>
+        <Reveal>
+        <div style={v3Styles.eyebrow}>/// 03 STACK</div>
+        <h2 style={v3Styles.h2}>{data.ui?.skillsTitle || "Stack em estudo."}</h2>
+        {(() => {
+          // Mapa nome → slug devicon
+          const ICONS = {
+            "java": "java", "spring boot": "spring", "spring": "spring",
+            "mysql": "mysql", "postgresql": "postgresql", "postgres": "postgresql",
+            "html / css": "html5", "html": "html5", "css": "css3",
+            "javascript": "javascript", "typescript": "typescript",
+            "git & github": "git", "git": "git", "github": "github",
+            "react": "react", "node.js": "nodejs", "node": "nodejs",
+            "docker": "docker", "linux": "linux", "python": "python",
+          };
+          const iconSlug = (n) => ICONS[n.toLowerCase()] || null;
+          const grouped = data.skills.reduce((acc, s) => { (acc[s.category] = acc[s.category] || []).push(s); return acc; }, {});
+          const cats = Object.keys(grouped);
+          return (
+            <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fit, minmax(260px, 1fr))`, gap: 20 }}>
+              {cats.map(cat => (
+                <div key={cat} style={{ padding: 22, border: `1px solid ${accentColor}30`, background: `linear-gradient(135deg, ${accentColor}08, transparent)` }}>
+                  <div style={{ color: secondColor, fontSize: 10, letterSpacing: 3, marginBottom: 14 }}>// {cat.toUpperCase()}</div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+                    {grouped[cat].map((s, i) => {
+                      const slug = iconSlug(s.name);
+                      return (
+                        <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", background: "#0f0820", border: `1px solid ${accentColor}40`, color: "#fff", fontFamily: "'Geist', sans-serif", fontSize: 13 }}>
+                          {slug && <img src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${slug}/${slug}-original.svg`} alt={s.name} style={{ width: 18, height: 18, objectFit: "contain" }} onError={e => { e.currentTarget.style.display = "none"; }} />}
+                          <span>{s.name}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+        </Reveal>
+        </div>
+      </section>
+
+      <section style={v3Styles.section}>
+        <Reveal>
+        <div style={v3Styles.eyebrow}>/// 04 TIMELINE</div>
+        <h2 style={v3Styles.h2}>{data.ui?.experienceTitle || "Trajetória."}</h2>
+        </Reveal>
+        <div style={{ display: "grid", gap: 16 }}>
+          {data.experience.map((x, i) => (
+            <div key={i} style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "180px 1fr", gap: mobile ? 8 : 30, padding: mobile ? "18px 14px" : "24px 20px", background: i % 2 ? "transparent" : "#0f0820", borderLeft: `3px solid ${accentColor}` }}>
+              <div>
+                <div style={{ color: secondColor, fontSize: 11, letterSpacing: 2 }}>{x.period}</div>
+                <div style={{ color: "#888", fontSize: 11, marginTop: 4 }}>{x.company}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: mobile ? 18 : 22, fontWeight: 700, fontFamily: "'Geist', sans-serif", marginBottom: 6 }}>{x.role}</div>
+                <p style={{ color: "#bbb", fontSize: 14, margin: 0, lineHeight: 1.6 }}>{x.description}</p>
+                {x.bullets && x.bullets.length > 0 && (
+                  <ul style={{ marginTop: 12, paddingLeft: 0, listStyle: "none", display: "grid", gap: 6 }}>
+                    {x.bullets.map((b, j) => (
+                      <li key={j} style={{ color: "#ccc", fontSize: 13, lineHeight: 1.55, fontFamily: "'Geist', sans-serif", paddingLeft: 18, position: "relative" }}>
+                        <span style={{ position: "absolute", left: 0, top: 8, width: 8, height: 1, background: accentColor }} />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {data.testimonials && data.testimonials.length > 0 && (
+        <section style={v3Styles.section}>
+          <Reveal>
+          <div style={v3Styles.eyebrow}>/// 05 REVIEWS</div>
+          <h2 style={v3Styles.h2}>{data.ui?.testimonialsTitle || "Recomendações."}</h2>
+          </Reveal>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 20 }}>
+            {data.testimonials.map((t, i) => (
+              <div key={i} style={{ padding: 28, border: `1px solid ${accentColor}30`, background: `linear-gradient(135deg, ${accentColor}08, ${secondColor}05)` }}>
+                <div style={{ color: accentColor, fontSize: 10, letterSpacing: 2, marginBottom: 14 }}>★★★★★</div>
+                <p style={{ fontSize: 15, color: "#ddd", lineHeight: 1.7, fontFamily: "'Geist', sans-serif", margin: "0 0 20px" }}>{t.quote}</p>
+                <div style={{ borderTop: `1px solid ${accentColor}30`, paddingTop: 12 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700 }}>{t.author}</div>
+                  <div style={{ fontSize: 11, color: "#888" }}>{t.role}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section id="contato" style={{ ...v3Styles.section, paddingTop: mobile ? 80 : 100, paddingBottom: mobile ? 100 : 140 }}>
+        <Reveal>
+        <div style={v3Styles.eyebrow}>/// {data.testimonials && data.testimonials.length > 0 ? "06" : "05"} CONNECT</div>
+        <h2 style={{ ...v3Styles.h2, fontSize: mobile ? 52 : 110, background: `linear-gradient(90deg, ${accentColor}, ${secondColor})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{(data.ui?.contactTitle || "Vamos\nconversar.").split("\n").map((line, i, arr) => <React.Fragment key={i}>{line}{i < arr.length - 1 && <br />}</React.Fragment>)}</h2>
+        {data.ui?.contactSubtitle && <div style={{ color: "#aaa", fontSize: mobile ? 14 : 16, fontFamily: "'Geist', sans-serif", marginBottom: 40 }}>{data.ui.contactSubtitle}</div>}
+        </Reveal>
+
+        <Reveal delay={0.15}>
+        {data.formspreeId ? (
+          contactStatus === "sent" ? (
+            <div style={{ textAlign: "center", padding: 40, border: `1px solid ${accentColor}40` }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>✓</div>
+              <div style={{ color: accentColor, fontSize: 14, letterSpacing: 2 }}>MENSAGEM ENVIADA!</div>
+              <div style={{ color: "#888", fontSize: 13, marginTop: 8 }}>Obrigado pelo contato. Responderei em breve.</div>
+            </div>
+          ) : (
+            <form onSubmit={submitContact} style={{ maxWidth: 560 }}>
+              <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 12, marginBottom: 0 }}>
+                <div>
+                  <div style={{ fontSize: 10, color: secondColor, letterSpacing: 2, marginBottom: 6 }}>NOME</div>
+                  <input required style={inputSt} value={contactForm.name} onChange={e => setContactForm(f => ({...f, name: e.target.value}))} placeholder="Seu nome" />
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, color: secondColor, letterSpacing: 2, marginBottom: 6 }}>EMAIL</div>
+                  <input required type="email" style={inputSt} value={contactForm.email} onChange={e => setContactForm(f => ({...f, email: e.target.value}))} placeholder="seu@email.com" />
+                </div>
+              </div>
+              <div style={{ fontSize: 10, color: secondColor, letterSpacing: 2, marginBottom: 6 }}>MENSAGEM</div>
+              <textarea required style={{ ...inputSt, minHeight: 120, resize: "vertical" }} value={contactForm.message} onChange={e => setContactForm(f => ({...f, message: e.target.value}))} placeholder="Olá, Marcus!" />
+              {contactStatus === "error" && <div style={{ color: "#ef4444", fontSize: 11, marginBottom: 12 }}>Erro ao enviar. Tente novamente.</div>}
+              <button type="submit" disabled={contactStatus === "sending"} style={{ padding: "14px 32px", background: contactStatus === "sending" ? "#333" : accentColor, color: "#000", border: "none", cursor: "pointer", fontFamily: "'JetBrains Mono',monospace", fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>{contactStatus === "sending" ? "enviando..." : "ENVIAR MENSAGEM ▶"}</button>
+            </form>
+          )
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            <a href={`mailto:${data.email}`} style={{ display: "inline-block", fontSize: mobile ? 16 : 24, color: "#fff", textDecoration: "none", padding: mobile ? "14px 24px" : "18px 40px", border: `2px solid ${accentColor}`, fontFamily: "'JetBrains Mono', monospace", wordBreak: "break-all" }}>&gt; {data.email}</a>
+          </div>
+        )}
+        </Reveal>
+
+        <div style={{ marginTop: 60, display: "flex", gap: 24, justifyContent: data.formspreeId ? "flex-start" : "center", fontSize: 12, flexWrap: "wrap" }}>
+          <a href={`https://${data.github}`} style={{ color: secondColor, textDecoration: "none" }}>[github]</a>
+          <a href={`https://${data.linkedin}`} style={{ color: secondColor, textDecoration: "none" }}>[linkedin]</a>
+          {data.cvUrl && <a href={data.cvUrl} target="_blank" rel="noopener" style={{ color: "#aaa", textDecoration: "none" }}>[baixar cv]</a>}
+        </div>
+      </section>
+
+      <footer style={{ padding: mobile ? "20px" : "24px 48px", borderTop: `1px solid ${accentColor}30`, display: "flex", justifyContent: "space-between", fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#555", flexWrap: "wrap", gap: 8 }}>
+        <span>© {new Date().getFullYear()} · {data.name}</span>
+        <span>{data.ui?.footerTag || "build.v3.synthgrid"}</span>
+      </footer>
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      `}</style>
+    </div>
+  );
+}
+
+Object.assign(window, { PortfolioV3, Hero3DTerrain, DNAHelix3D, CustomCursor, TiltCard, MagneticButton, HiddenAdminTrigger, DiscreetAdminLink });
+
+  </script>
+
+  <script type="text/babel">
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<PortfolioV3 accentColor="#ff00aa" bgColor="#0a0514" />);
+  </script>
+</body>
+</html>
